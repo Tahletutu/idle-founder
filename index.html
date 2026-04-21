@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0b1020" id="themeColorMeta" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Idle Founder" />
+  <meta name="description" content="Crée ta startup, recrute, scale, lève des fonds et prestige dans un idle game complet en PWA." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <title>🚀 Idle Founder</title>
+</head>
+<body>
+  <div id="app">
+    <div class="bg-blur blur-a"></div>
+    <div class="bg-blur blur-b"></div>
+
+    <header class="topbar glass">
+      <div>
+        <div class="eyebrow">IDLE FOUNDER</div>
+        <h1>🚀 Bâtis ta startup</h1>
+        <p class="subtitle">Un idle game complet, installable, hors ligne et sauvegardé localement.</p>
+      </div>
+      <div class="topbar-actions">
+        <button id="installBtn" class="btn secondary hidden">Installer</button>
+        <button id="saveBtn" class="btn ghost">Sauvegarder</button>
+        <button id="exportBtn" class="btn ghost">Exporter</button>
+        <button id="importBtn" class="btn ghost">Importer</button>
+        <input id="importFile" type="file" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="hero glass card">
+        <div class="hero-row">
+          <div>
+            <div class="startup-name-row">
+              <input id="startupNameInput" class="startup-name-input" maxlength="24" placeholder="Nom de la startup" />
+              <button id="renameBtn" class="btn small">Renommer</button>
+            </div>
+            <div class="founder-line">Fondateur <span id="founderLevel">Niveau 1</span> · Prestige <span id="prestigePts">0</span></div>
+          </div>
+          <div class="status-badges">
+            <div class="badge" id="onlineBadge">🟢 En ligne</div>
+            <div class="badge accent" id="stageBadge">Garage</div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi glass-inner">
+            <div class="kpi-label">Trésorerie</div>
+            <div class="kpi-value money" id="moneyVal">0 €</div>
+            <div class="kpi-sub" id="cashflowVal">+0 €/s</div>
+          </div>
+          <div class="kpi glass-inner">
+            <div class="kpi-label">Utilisateurs</div>
+            <div class="kpi-value" id="usersVal">0</div>
+            <div class="kpi-sub" id="growthVal">+0/s</div>
+          </div>
+          <div class="kpi glass-inner">
+            <div class="kpi-label">Réputation</div>
+            <div class="kpi-value" id="reputationVal">0</div>
+            <div class="kpi-sub" id="hypeVal">Hype 0</div>
+          </div>
+          <div class="kpi glass-inner">
+            <div class="kpi-label">Burn rate</div>
+            <div class="kpi-value danger" id="burnVal">0 €/s</div>
+            <div class="kpi-sub" id="runwayVal">Runway ∞</div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn primary" id="shipFeatureBtn">⚡ Ship une feature</button>
+          <button class="btn secondary" id="runCampaignBtn">📣 Lancer une campagne</button>
+          <button class="btn secondary" id="pitchInvestorBtn">💸 Pitch investisseur</button>
+          <button class="btn danger" id="fixBugsBtn">🛠 Corriger les bugs</button>
+        </div>
+
+        <div class="progress-grid">
+          <div>
+            <div class="progress-label-row"><span>Satisfaction</span><strong id="satisfactionLabel">100%</strong></div>
+            <div class="progress"><div id="satisfactionBar"></div></div>
+          </div>
+          <div>
+            <div class="progress-label-row"><span>Charge serveurs</span><strong id="serverLoadLabel">0%</strong></div>
+            <div class="progress"><div id="serverLoadBar" class="warning"></div></div>
+          </div>
+          <div>
+            <div class="progress-label-row"><span>Bugs</span><strong id="bugsLabel">0</strong></div>
+            <div class="progress"><div id="bugsBar" class="danger"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tabs-row">
+        <button class="tab active" data-tab="dashboard">Vue d'ensemble</button>
+        <button class="tab" data-tab="team">Équipe</button>
+        <button class="tab" data-tab="product">Produit</button>
+        <button class="tab" data-tab="growth">Croissance</button>
+        <button class="tab" data-tab="investors">Finance</button>
+        <button class="tab" data-tab="meta">Meta</button>
+      </section>
+
+      <section id="dashboard" class="tab-panel active panel-grid">
+        <article class="card glass">
+          <div class="section-head"><h2>🎯 Missions</h2><span class="pill" id="missionsDoneLabel">0 validée</span></div>
+          <div id="missionsList" class="stack"></div>
+        </article>
+
+        <article class="card glass">
+          <div class="section-head"><h2>🏆 Succès</h2><span class="pill" id="achievementsCount">0</span></div>
+          <div id="achievementsList" class="stack compact"></div>
+        </article>
+
+        <article class="card glass wide">
+          <div class="section-head"><h2>📰 Flux startup</h2><span class="pill" id="eventMoodLabel">Neutre</span></div>
+          <div id="eventLog" class="timeline"></div>
+        </article>
+
+        <article class="card glass wide">
+          <div class="section-head"><h2>📊 Analytics</h2><span class="pill" id="analyticsSummary">Stable</span></div>
+          <div class="analytics-grid">
+            <div class="metric-box">
+              <span>MRR</span><strong id="mrrVal">0 €</strong>
+            </div>
+            <div class="metric-box">
+              <span>Churn</span><strong id="churnVal">0%</strong>
+            </div>
+            <div class="metric-box">
+              <span>Conversion</span><strong id="conversionVal">0%</strong>
+            </div>
+            <div class="metric-box">
+              <span>Valo</span><strong id="valuationVal">0 €</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="team" class="tab-panel panel-grid">
+        <article class="card glass">
+          <div class="section-head"><h2>👥 Recrutement</h2><span class="pill" id="teamSizeLabel">0 employés</span></div>
+          <div id="hireCards" class="stack"></div>
+        </article>
+        <article class="card glass">
+          <div class="section-head"><h2>🏢 Culture</h2><span class="pill" id="moraleLabel">100%</span></div>
+          <div class="stats-list" id="teamStats"></div>
+          <div class="hero-actions split-two">
+            <button class="btn secondary" id="teamEventBtn">🍕 Team building</button>
+            <button class="btn danger" id="crunchBtn">🔥 Mode crunch</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="product" class="tab-panel panel-grid">
+        <article class="card glass">
+          <div class="section-head"><h2>🧠 Roadmap</h2><span class="pill" id="featuresBuiltLabel">0 features</span></div>
+          <div id="featureCards" class="stack"></div>
+        </article>
+        <article class="card glass">
+          <div class="section-head"><h2>🖥 Infrastructure</h2><span class="pill" id="serverTierLabel">Niveau 1</span></div>
+          <div id="serverCards" class="stack"></div>
+        </article>
+      </section>
+
+      <section id="growth" class="tab-panel panel-grid">
+        <article class="card glass">
+          <div class="section-head"><h2>📣 Acquisition</h2><span class="pill" id="campaignsRunLabel">0 campagnes</span></div>
+          <div id="campaignCards" class="stack"></div>
+        </article>
+        <article class="card glass">
+          <div class="section-head"><h2>🌍 Marchés</h2><span class="pill" id="marketsOpenLabel">1 marché</span></div>
+          <div id="marketCards" class="stack"></div>
+        </article>
+      </section>
+
+      <section id="investors" class="tab-panel panel-grid">
+        <article class="card glass">
+          <div class="section-head"><h2>💸 Levées de fonds</h2><span class="pill" id="fundingTotalLabel">0 €</span></div>
+          <div id="fundingCards" class="stack"></div>
+        </article>
+        <article class="card glass">
+          <div class="section-head"><h2>🧾 Finances</h2><span class="pill" id="financeHealthLabel">OK</span></div>
+          <div class="stats-list" id="financeStats"></div>
+          <div class="hero-actions split-two">
+            <button class="btn secondary" id="monetizeBtn">💳 Optimiser la monétisation</button>
+            <button class="btn danger" id="downRoundBtn">🆘 Pont d'urgence</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="meta" class="tab-panel panel-grid">
+        <article class="card glass">
+          <div class="section-head"><h2>✨ Prestige</h2><span class="pill" id="prestigeForecast">+0 points</span></div>
+          <p class="muted">Réinitialise ta startup pour gagner des points de prestige permanents. Ils boostent toutes tes futures parties.</p>
+          <div class="stats-list" id="prestigeStats"></div>
+          <button class="btn primary full" id="prestigeBtn">🌌 Repartir avec prestige</button>
+        </article>
+        <article class="card glass">
+          <div class="section-head"><h2>⚙️ Options</h2><span class="pill">PWA</span></div>
+          <div class="hero-actions split-two">
+            <button class="btn secondary" id="themeBtn">🌙 Changer thème</button>
+            <button class="btn secondary" id="resetBtn">🗑 Reset total</button>
+          </div>
+          <div class="stats-list" id="metaStats"></div>
+        </article>
+      </section>
+    </main>
+
+    <div id="toast"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
